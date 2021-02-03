@@ -4,10 +4,11 @@ import {useAuth} from '../../contexts/AuthContext';
 import {Link, useHistory} from 'react-router-dom';
 
 export default function UpdateProfile() {
+    const nameRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
     const passwordConfirmRef = useRef();
-    const {currentUser, updatePassword} = useAuth();
+    const {currentUser, updatePassword, updateName} = useAuth();
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const history = useHistory();
@@ -25,6 +26,10 @@ export default function UpdateProfile() {
 
         if(passwordRef.current.value){
             promises.push(updatePassword(passwordRef.current.value));
+        }
+
+        if(nameRef.current.value){
+            promises.push(updateName(nameRef.current.value));
         }
 
         Promise.all(promises)
@@ -49,6 +54,10 @@ export default function UpdateProfile() {
                         <Form.Group id="email">
                             <Form.Label>Email</Form.Label>
                             <Form.Control type="email" ref={emailRef} defaultValue={currentUser.email} disabled></Form.Control>
+                        </Form.Group>
+                        <Form.Group id="name">
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control type="text" ref={nameRef} defaultValue={currentUser.displayName}></Form.Control>
                         </Form.Group>
                         <Form.Group id="password">
                             <Form.Label>Password</Form.Label>
