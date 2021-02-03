@@ -1,5 +1,5 @@
 import {React, useRef, useState } from 'react'
-import {Card, Form, Button, Alert} from 'react-bootstrap';
+import {Card, Form, Button, Alert, Container} from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import {useAuth} from '../../contexts/AuthContext';
 
@@ -27,12 +27,10 @@ export default function Login() {
     }
 
     return (
-        <>
-            <Card>
+        <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: "100vh" }}>
+            <Card style={{ maxWidth: "400px",  width:"400px"}}>
                 <Card.Body>
-                    <h2 className="text-center mb-4">
-                        Login
-                    </h2>
+                    <Card.Title>Login</Card.Title>
                     {error && <Alert variant="danger">{error}</Alert>}
                     <Form onSubmit={handleSubmit}>
                         <Form.Group id="email">
@@ -50,11 +48,11 @@ export default function Login() {
                     </div>
 
                 </Card.Body>
-            
-            </Card>
-            <div className="w-100 text-center mt-2">
+                <Card.Footer>
                 Need an account? <Link to="/signup">Sign up</Link>
-            </div> 
-        </>
+                </Card.Footer>
+            </Card>
+
+        </Container>
     )
 }

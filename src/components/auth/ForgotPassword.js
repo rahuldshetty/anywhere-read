@@ -1,5 +1,5 @@
 import {React, useRef, useState } from 'react'
-import {Card, Form, Button, Alert} from 'react-bootstrap';
+import {Card, Form, Button, Alert, Container} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {useAuth} from '../../contexts/AuthContext';
 
@@ -29,12 +29,10 @@ export default function FotgotPassword() {
     }
 
     return (
-        <>
-            <Card>
+        <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: "100vh" }}>
+            <Card style={{ maxWidth: "400px", width:"400px" }}>
                 <Card.Body>
-                    <h2 className="text-center mb-4">
-                        Forgot Password
-                    </h2>
+                    <Card.Title>Forgot Password</Card.Title>
                     {error && <Alert variant="danger">{error}</Alert>}
                     {message && <Alert variant="success">{message}</Alert>}
                     <Form onSubmit={handleSubmit}>
@@ -49,11 +47,11 @@ export default function FotgotPassword() {
                     </div>
 
                 </Card.Body>
-            
-            </Card>
-            <div className="w-100 text-center mt-2">
+
+                <Card.Footer>
                 Need an account? <Link to="/signup">Sign up</Link>
-            </div> 
-        </>
+                </Card.Footer>
+            </Card>
+        </Container>
     )
 }
