@@ -1,13 +1,14 @@
 import React, {useState} from 'react'
-import {NavDropdown, Navbar, Nav, Dropdown} from 'react-bootstrap';
+import {Navbar, Nav, Dropdown} from 'react-bootstrap';
 import { useAuth } from '../../contexts/AuthContext';
-import {Link, useHistory} from 'react-router-dom';
+import {Link, useHistory, useRouteMatch} from 'react-router-dom';
 import Avatar from 'react-avatar';
 
-export default function NavBar() {
+export default function NavBar(props) {
     const [error, setError] = useState();
     const {currentUser, logout} = useAuth();
     const history = useHistory();
+    const {url} = useRouteMatch();
 
     async function handleLogout(){
         setError("")
@@ -37,6 +38,9 @@ export default function NavBar() {
         .btn-primary.focus, .btn-primary:focus{
             box-shadow: 0 0 0 .2rem rgba(0,0,0,0);
         }
+        .navbar{
+            padding: 0 1rem;
+        }
         `
         }
         </style>
@@ -44,24 +48,26 @@ export default function NavBar() {
         <Navbar bg="dark" variant="dark" fixed="top">
             <Navbar.Brand>
                 <img
-                src="/logo.svg"
+                src="./logo.svg"
                 width="30"
                 height="30"
                 className="d-inline-block align-top"
                 alt="Anywhere-Read"
                 />
+                {' '}
+                Anywhere-Read
             </Navbar.Brand>
             <Nav className="mr-auto">
 
             </Nav>
             <Nav>
-                <Dropdown menuAlign="right">
+                <Dropdown>
                     <Dropdown.Toggle>
                         <Avatar name={currentUser.displayName? currentUser.displayName: "Anonymous" } textSizeRatio={2} size="50" round={true} />
                     </Dropdown.Toggle>
                     <Dropdown.Menu className="dropdown-menu-right">
                         <Dropdown.Header>{currentUser.displayName? currentUser.displayName: "Anonymous" }</Dropdown.Header>
-                        <Dropdown.Item href="/update-profile">Edit Profile</Dropdown.Item>
+                        <Dropdown.Item as={Link} to={`/edit-profile`}>Edit Profile</Dropdown.Item>
                         <Dropdown.Divider />
                         <Dropdown.Item onClick={handleLogout}>Log Out</Dropdown.Item>
                     </Dropdown.Menu>
