@@ -21,34 +21,54 @@ export default function NavBar() {
 
     return (
         <>
-            <Navbar bg="dark" variant="dark" fixed="top">
-                <Navbar.Brand>
-                    <img
-                    src="/logo.svg"
-                    width="30"
-                    height="30"
-                    className="d-inline-block align-top"
-                    alt="Anywhere-Read"
-                    />
-                </Navbar.Brand>
-                <Nav className="mr-auto">
+        <style type="text/css">
+        {`
+        .btn-primary, .btn-primary.dropdown-toggle{
+            background-color: transparent;
+            border-color: transparent;
+        }
+        .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show > .btn-primary.dropdown-toggle{
+            background-color: transparent;
+            border-color: transparent;
+        }
+        .btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show > .btn-primary.dropdown-toggle:focus{
+            box-shadow: 0 0 0 .2rem rgba(0,0,0,0);
+        }
+        .btn-primary.focus, .btn-primary:focus{
+            box-shadow: 0 0 0 .2rem rgba(0,0,0,0);
+        }
+        `
+        }
+        </style>
 
-                </Nav>
-                <Nav>
-                    <Dropdown>
-                        <Dropdown.Toggle>
-                            <Avatar name={currentUser.displayName? currentUser.displayName: "Anonymous" } textSizeRatio={2} size="50" round={true} />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu show>
-                            <Dropdown.Header>{currentUser.displayName? currentUser.displayName: "Anonymous" }</Dropdown.Header>
-                            <Dropdown.Item href="/update-profile">Edit Profile</Dropdown.Item>
-                            <Dropdown.Divider />
-                            <Dropdown.Item onClick={handleLogout}>Log Out</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </Nav>
+        <Navbar bg="dark" variant="dark" fixed="top">
+            <Navbar.Brand>
+                <img
+                src="/logo.svg"
+                width="30"
+                height="30"
+                className="d-inline-block align-top"
+                alt="Anywhere-Read"
+                />
+            </Navbar.Brand>
+            <Nav className="mr-auto">
 
-            </Navbar>
+            </Nav>
+            <Nav>
+                <Dropdown menuAlign="right">
+                    <Dropdown.Toggle>
+                        <Avatar name={currentUser.displayName? currentUser.displayName: "Anonymous" } textSizeRatio={2} size="50" round={true} />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className="dropdown-menu-right">
+                        <Dropdown.Header>{currentUser.displayName? currentUser.displayName: "Anonymous" }</Dropdown.Header>
+                        <Dropdown.Item href="/update-profile">Edit Profile</Dropdown.Item>
+                        <Dropdown.Divider />
+                        <Dropdown.Item onClick={handleLogout}>Log Out</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+            </Nav>
+
+        </Navbar>
         </>
     )
 }
