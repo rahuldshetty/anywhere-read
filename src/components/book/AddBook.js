@@ -20,6 +20,8 @@ export default function AddBook() {
     const [category, setCategory] = useState('');
 
     const [model, setModel] = useState();
+
+    var bookRef = firestore.collection("anywhere-read").doc("Books").collection(currentUser.uid);
     
     useEffect(()=>{
         tf.ready().then(async ()=>{
@@ -30,8 +32,6 @@ export default function AddBook() {
             setModel();
         };
     }, []);
-      
-    var bookRef = firestore.collection("anywhere-read").doc("Books").collection(currentUser.uid);
 
     function handleCategoryChange(e){
         setLoading(true)

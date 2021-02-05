@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Navbar, Nav, Dropdown} from 'react-bootstrap';
+import {Navbar, Nav, Dropdown, Container} from 'react-bootstrap';
 import { useAuth } from '../../contexts/AuthContext';
 import {Link, useHistory, useRouteMatch} from 'react-router-dom';
 import Avatar from 'react-avatar';
@@ -21,7 +21,7 @@ export default function NavBar(props) {
     }
 
     return (
-        <>
+        <Container>
         <style type="text/css">
         {`
         .btn-primary, .btn-primary.dropdown-toggle{
@@ -45,7 +45,7 @@ export default function NavBar(props) {
         }
         </style>
 
-        <Navbar bg="dark" variant="dark" fixed="top">
+        <Navbar bg="dark" variant="dark" sticky fixed="top">
             <Navbar.Brand>
                 <img
                 src="./logo.svg"
@@ -75,6 +75,6 @@ export default function NavBar(props) {
             </Nav>
 
         </Navbar>
-        </>
+        </Container>
     )
 }
