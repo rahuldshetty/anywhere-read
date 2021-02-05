@@ -4,6 +4,9 @@ import { Link, useHistory } from 'react-router-dom';
 import {useAuth} from "../../contexts/AuthContext";
 import {storage, firestore} from '../../firebase';
 import { nanoid } from 'nanoid';
+import * as tf from '@tensorflow/tfjs';
+import {fetch_class} from "../../ml";
+import {useEffect} from "react";
 import {PERMISSION_SELF, PERMISSION_OTHERS, PERMISSION_ALL} from "../permissions";
 
 export default function AddBook() {
@@ -14,8 +17,32 @@ export default function AddBook() {
     const {currentUser} = useAuth();
     const [fileName, setFileName] = useState("Upload PDF File");
     const [file, setFile] = useState();
+    const [category, setCategory] = useState('');
 
+    const [model, setModel] = useState();
+    
+    useEffect(()=>{
+        tf.ready().then(async ()=>{
+            let _model = await tf.loadLayersModel(process.env.PUBLIC_URL + `/model/model.json`);
+            setModel(_model);
+        })
+        return function cleanup() {   
+            setModel();
+        };
+    }, []);
+      
     var bookRef = firestore.collection("anywhere-read").doc("Books").collection(currentUser.uid);
+
+    function handleCategoryChange(e){
+        setLoading(true)
+        let text = e.target.value;
+        if(text.length > 10)
+        {
+            let result = fetch_class(model, text)
+            setCategory(result);
+        }
+        setLoading(false)
+    }
 
     function handleChange(e){
         if(e.target.files[0].name.endsWith(".pdf"))
@@ -43,7 +70,8 @@ export default function AddBook() {
                 "permission": PERMISSION_SELF,
                 "title": nameRef.current.value,
                 "url": url,
-                "created": new Date()
+                "created": new Date(),
+                "category": category
             })
             .then(()=>resolve(true))
             .catch(()=>resolve(false))
@@ -83,7 +111,7 @@ export default function AddBook() {
                         <Form onSubmit={handleSubmit}>
                             <Form.Group id="name">
                                 <Form.Label>Title</Form.Label>
-                                <Form.Control type="title" ref={nameRef} required></Form.Control>
+                                <Form.Control type="title" ref={nameRef} onChange={handleCategoryChange} required></Form.Control>
                             </Form.Group>  
                             <Form.Group id="name">
                                 <FormFile
@@ -95,6 +123,9 @@ export default function AddBook() {
                                     custom
                                 />
                             </Form.Group>  
+                            <Form.Group id="category">
+                                <h6 muted>Category: {category}</h6>
+                            </Form.Group>
                             <Button type="submit" disabled={loading} className="w-100">Upload</Button>      
                         </Form>
 
